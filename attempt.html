@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Jabari Parker's Stats</title>
+      <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+        <style type="text/css">
+               
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+            
+            //Width and height
+            var w = 600;
+            var h = 700;
+            
+            //Data
+            var gamestats = [                         ///Wanted to figure out how to use arrays
+              {                                       //These are basketball stats for 1 player
+                  opponent: "Pittsburgh",
+                  fieldgoals: 7,
+                  threepoints: 2,
+                  rebounds: 11,
+                  totalgamepoints: 80
+
+              },
+              {
+                  opponent: "Florida State",
+                  fieldgoals: 3,
+                  threepoints: 1,
+                  rebounds: 14,
+                  totalgamepoints: 78
+
+              }
+            ];
+
+            //var test = [ 0, 2,]
+
+            
+            //Creates SVG element
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+
+            var gamename = svg.selectAll("gamename") //Not sure why this works?? 
+                .data(gamestats)
+                .enter()
+                .append("text")
+                .text(function(d){
+                      return d.opponent;            //woo, figured out how to access the info in the array
+                  })
+                .attr("x", function(d, i) {
+                      return ((i + 1) * (.33 * w));  //Dirty but quick way to find space out 2 columns evenly.
+                  })
+                .attr("y",50)
+                .attr("font-family", "sans-serif" )
+                .attr("font-size", 20)
+                .attr("class", "gamename")
+                .attr("text-anchor", "middle");
+
+            var fieldgoals = svg.selectAll("circle")
+                .data(gamestats)
+                .enter()
+                .append("circle")
+                .attr("r", function(d, i) {
+                      return d.fieldgoals * 10;
+                  })
+                .attr("cx", function(d, i) {
+                      return ((i + 1) * (.33 * w));  //Not a good way to "center" the circles
+                  })
+                .attr("cy",150)
+                .attr("fill","blue")
+                .attr("opacity",".75");
+
+            var pointlabel = svg.selectAll("class","scores")  //Not sure why this works?? 
+                .data(gamestats)
+                .enter()
+                .append("text")
+                .text(function(d){
+                      return d.fieldgoals * 2;    //Converts to points value, espn gives gives raw # of goals     
+                  })
+                .attr("x", function(d, i) {
+                      return ((i + 1) * (.33 * w)); //Probably not a good way to "center"
+                  })
+                .attr("y", function(d,i){
+                      return 150 + ((d.fieldgoals) + (8)); //Relates the centering of the text to it's size
+                  })
+                .attr("font-family", "sans-serif" )
+                .attr("font-size", function(d,i) {
+                      return (d.fieldgoals * 5) + (10); //Size of font scales as points goes up
+                  })
+                .attr("fill","white")
+                .attr("text-anchor", "middle")
+                .attr("class","scores");
+        </script>
+    </body>
+</html>
